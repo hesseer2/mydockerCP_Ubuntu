@@ -1,0 +1,41 @@
+# Docker commands to run the docker cellprofiler image with examples
+# Pull the docker image from Docker Hub ore create is from the Dockerfile
+#
+
+docker build -t dockercp2 .
+
+#/docker run -i -t dockercp2
+
+#docker run --rm -t -i -v /c/Users/data/:/input v /c/Users/data/:/output v /c/Users/data/:/pipeline dockercp2 cellprofiler
+
+docker run --rm -t -i -v /c/Users/data/:/input v /c/Users/data/Output:/output v /c/Users/data/:/pipeline dockercp2 cellprofiler -c -r -i /input -o /output -p /pipeline
+
+docker run -t dockercp2
+ctrl-c
+
+docker ps
+
+docker rename 73081f41c7f3 dockercp
+
+# using copy command to copy the cellprofiler files to the container
+docker cp d:/data/ dockercp:/tmp/data/
+
+# mount a volume to the container
+docker run -v c:/data/:/data --name dockercp ls /data
+
+docker exec dockercp cellprofiler -r -c -p /tmp/data/ExampleTumors.cppipe -i /tmp/data/ -o /tmp/data/Output/ 
+
+#copy the data back to the local host
+docker cp dockercp:/tmp/data/ c:/dataFromDocker2/
+
+# remove the data from the container
+docker exec dockercp rm -r /tmp/data/
+
+docker exec dockercp cellprofiler -r -c -p /tmp/data/ExampleHuman.cppipe -i /tmp/data/ -o /tmp/data/Output/  --file-list="/tmp/data/imagelist.txt"
+
+
+
+
+
+
+
